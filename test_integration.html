@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Teste de Integração - Middleware Grupo 14</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .box h2 {
+            margin-top: 0;
+        }
+
+        input,
+        button {
+            padding: 8px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>📟 Painel de Teste (Simulador Mendix)</h1>
+    <p>Usa esta página para testar se o Middleware está a funcionar. Se funcionar aqui, vai funcionar no Mendix!</p>
+
+    <!-- TESTE 1: STOCK -->
+    <div class="box">
+        <h2>1. Consultar Stock (GET)</h2>
+        <input type="text" id="refStock" placeholder="Referência (ex: VT-S2-25111258)" value="VT-S2-25111258">
+        <button onclick="checkStock()">🔍 Ver Stock</button>
+        <pre id="resStock">...</pre>
+    </div>
+
+    <!-- TESTE 2: REGISTAR CLIENTE -->
+    <div class="box">
+        <h2>2. Registar Cliente (POST)</h2>
+        <input type="text" id="nifCliente" placeholder="NIF (ex: 269813098)" value="269813098">
+        <input type="text" id="nomeCliente" placeholder="Nome" value="Cliente Teste HTML">
+        <input type="text" id="emailCliente" placeholder="Email" value="cliente@teste.com">
+        <input type="text" id="moradaCliente" placeholder="Morada" value="Rua do Teste, 123">
+        <input type="text" id="cidadeCliente" placeholder="Localidade" value="Lisboa">
+        <button onclick="registerClient()">👤 Criar Cliente Completo</button>
+        <pre id="resCliente">...</pre>
+    </div>
+
+    <!-- TESTE 3: FATURA -->
+    <div class="box">
+        <h2>3. Emitir Fatura (POST)</h2>
+        <p><small>Envia um JSON fixo de teste.</small></p>
+        <button onclick="emitInvoice()">📄 Emitir Fatura Teste</button>
+        <pre id="resFatura">...</pre>
+    </div>
+
+    <script>
+        const API = 'http://localhost:3000/api';
+
+        async function checkStock() {
+            const ref = document.getElementById('refStock').value;
+            const resEl = document.getElementById('resStock');
+            resEl.innerText = 'A carregar...';
+            try {
+                const req = await fetch(`${API}/stock/${ref}`);
+                const data = await req.json();
+                resEl.innerText = JSON.stringify(data, null, 2);
+            } catch (e) { resEl.innerText = 'Erro: ' + e.message; }
+        }
+
+        async function registerClient() {
+            const nif = document.getElementById('nifCliente').value;
+            const nome = document.getElementById('nomeCliente').value;
+            const email = document.getElementById('emailCliente').value;
+            const morada = document.getElementById('moradaCliente').value;
+            const cidade = document.getElementById('cidadeCliente').value;
+
+            const resEl = document.getElementById('resCliente');
+            resEl.innerText = 'A enviar...';
+            try {
+                const req = await fetch(`${API}/clientes`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        fiscal_id: nif,
+                        name: nome,
+                        email: email,
+                        address: morada,
+                        city: cidade
+                    })
+                });
+                const data = await req.json();
+                resEl.innerText = JSON.stringify(data, null, 2);
+            } catch (e) { resEl.innerText = 'Erro: ' + e.message; }
+        }
+
+        async function emitInvoice() {
+            const resEl = document.getElementById('resFatura');
+            resEl.innerText = 'A enviar...';
+            // Exemplo simplificado de fatura
+            const invoiceData = {
+                type: "FT",
+                items: [{ reference: "VT-S2-25111258", qty: 1 }]
+            };
+            try {
+                const req = await fetch(`${API}/fatura`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(invoiceData)
+                });
+                const data = await req.json();
+                resEl.innerText = JSON.stringify(data, null, 2);
+            } catch (e) { resEl.innerText = 'Erro: ' + e.message; }
+        }
+    </script>
+</body>
+
+</html>
