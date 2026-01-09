@@ -27,6 +27,7 @@ module.exports = {
 
     // Controlador para Criar Cliente
     registerClient: async (req, res) => {
+        console.log("📥 Mendix enviou:", JSON.stringify(req.body, null, 2)); // DEBUG
         try {
             const clientData = req.body;
             const data = await vendusService.createClient(clientData);

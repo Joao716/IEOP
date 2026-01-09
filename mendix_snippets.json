@@ -1,0 +1,25 @@
+{
+    "REQUEST_CLIENT_CREATE": {
+        "fiscal_id": "123456789",
+        "name": "Nome do Cliente",
+        "email": "email@exemplo.com",
+        "address": "Rua Exemplo, 123",
+        "city": "Lisboa"
+    },
+    "REQUEST_INVOICE_CREATE": {
+        "type": "FT",
+        "items": [
+            {
+                "reference": "VT-S2-25111258",
+                "qty": 1
+            }
+        ]
+    },
+    "RESPONSE_PRODUCT_STOCK": {
+        "id": 296225761,
+        "reference": "VT-S2-25111258",
+        "title": "T-shirt Clássica",
+        "stock": 97,
+        "gross_price": "12.29"
+    }
+}
