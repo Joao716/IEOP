@@ -59,7 +59,7 @@ Cria fatura no Vendus. Payload esperado:
 }
 ```
 
-### `POST /api/cliente`
+### `POST /api/clientes`
 Regista cliente no Vendus.
 
 ## Grupo 14
