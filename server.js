@@ -5,15 +5,11 @@ const routes = require('./src/routes');
 
 const app = express();
 
-// Middleware básico
-app.use(cors()); // Permite que o Mendix fale com este servidor
-app.use(express.json()); // Permite receber JSON (Substitui body-parser)
+app.use(cors());
+app.use(express.json());
 
-// Usar as rotas definidas
 app.use('/api', routes);
 
-// Iniciar servidor
-// Iniciar servidor
 const server = app.listen(config.port, () => {
     console.log(`Middleware do Grupo 14 a correr na porta ${config.port}`);
     console.log(`API Base: http://localhost:${config.port}/api`);

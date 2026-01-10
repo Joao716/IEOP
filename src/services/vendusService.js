@@ -1,7 +1,7 @@
 const axios = require('axios');
 const config = require('../config');
 
-// Configuração base do Axios com a vossa API Key
+// Configuração base do Axios
 const api = axios.create({
     baseURL: config.vendus.baseUrl,
     auth: {
